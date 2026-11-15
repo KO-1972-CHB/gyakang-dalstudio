@@ -1,0 +1,19 @@
+GyakAngol AI Dalstúdió 2.3.0 – VALÓDI JELSZAVAS BELÉPÉS
+
+FONTOS: ez már NEM önálló, megnyitható HTML, hanem Next.js alkalmazás.
+
+VERCEL TELEPÍTÉS
+1. Töltsd fel a ZIP tartalmát egy GitHub repositoryba.
+2. Vercelben Import Project → válaszd a repositoryt (Framework: Next.js).
+3. Settings → Environment Variables: DALSTUDIO_PASSWORD = saját erős jelszó; DALSTUDIO_SESSION_SECRET = legalább 32 véletlen karakter (pl. openssl rand -hex 32).
+4. Redeploy. Az alkalmazás /login címen jelszót kér, és csak sikeres belépés után engedi a /studio.html oldalt.
+5. A Dalstúdió bal alsó sarkában a Kijelentkezés lezárja a munkamenetet.
+
+HELYI FUTTATÁS
+Másold .env.example fájlt .env.local névre, állíts be erős értékeket. npm install, majd npm run dev.
+
+BIZTONSÁG
+A jelszó és a munkamenet titka kizárólag szerveroldali környezeti változó. A munkamenet 12 órás, HttpOnly, SameSite=Strict aláírt cookie.
+A prototípus helyi tárolású projektjei továbbra is az adott böngészőben maradnak. A jelszó nem titkosítja a böngésző localStorage adatait, és nem hoz létre felhasználói fiókot.
+Éles nyilvános használathoz további próbálkozáskorlátozás (rate limiting), naplózás és szükség szerint többfelhasználós hitelesítés ajánlott.
+A régi önálló HTML fájl külön továbbra is jelszó nélkül megnyitható: ne tedd közzé.

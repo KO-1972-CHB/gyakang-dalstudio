@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GyakAngol – Dalkészítő</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Figtree:wght@400;500;600;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --ink:#2e1507;          /* közös a videókészítővel */
+  --ink-soft:#6b5547;
+  --brand:#cf5a42;        /* GyA logó – közös */
+  --page:#ece6f8;         /* dalkészítő: levendula */
+  --hero:#d2c5f2;
+  --tint:#f5f1fd;
+  --line:#b5a3de;
+  --badge:#e2d8f7;
+  --badge-ink:#5b3aa8;
+  --off:#a9a5ae;
+  --ok:#2c6a3c;
+  --warn:#9a4f12;
+  --body:"Figtree","Apercu","Inter",Arial,sans-serif;
+  --display:"Caveat Brush","Segoe Print","Comic Sans MS",cursive;
+  font-family:var(--body);color:var(--ink);background:var(--page);
+}
+*{box-sizing:border-box}
+body{margin:0;font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+.hide{display:none!important}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--badge-ink);outline-offset:3px}
+
+.app{display:grid;grid-template-columns:272px minmax(0,1fr);min-height:100vh}
+
+/* oldalsáv */
+.side{padding:24px 14px;display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;padding:0 10px;font-weight:700;font-size:16px}
+.logo{background:var(--brand);color:#fff;border-radius:10px;width:38px;height:38px;display:grid;place-items:center;font-size:13px;font-weight:700}
+.newbtn{display:flex;align-items:center;gap:12px;width:100%;margin-top:6px;background:#fff;border:0;border-radius:14px;padding:15px 16px;font-weight:700;cursor:pointer;text-align:left}
+.newbtn:hover{background:#faf8ff}
+.newbtn svg{flex:none}
+.side hr{border:0;border-top:1px solid #d8cdef;margin:8px 10px}
+.side h3{margin:4px 14px 0;font-size:13px;font-weight:700;color:var(--ink-soft)}
+.projects{display:flex;flex-direction:column;gap:4px;max-height:58vh;overflow:auto;padding:0 2px}
+.project{background:transparent;border:0;border-radius:12px;padding:11px 14px;text-align:left;cursor:pointer}
+.project:hover,.project.active{background:#fff}
+.project-row{position:relative;display:flex;align-items:center;border-radius:12px;gap:3px}.project-row:hover,.project-row.active{background:#fff}.project-row .project{flex:1;min-width:0}.project-row .more{border:0;background:transparent;border-radius:10px;padding:9px;cursor:pointer;font-size:20px}.project-row .more:hover{background:var(--badge)}.project-menu{position:absolute;z-index:8;left:0;top:0;width:190px;background:#fff;border-radius:14px;box-shadow:0 12px 35px #2e150733;padding:8px}.project-menu{max-height:none;overflow:visible}.project-menu button{display:block;width:100%;border:0;background:transparent;text-align:left;padding:10px;border-radius:8px;cursor:pointer}.project-menu button:hover{background:var(--tint)}.project-menu .danger{color:#b53224}.project strong{display:block;font-weight:600}
+.project small{display:block;color:var(--ink-soft);font-size:12px}
+.empty{margin:6px 14px;color:var(--ink-soft);font-size:13px}
+.foot{margin:auto 14px 0;font-size:12px;color:var(--ink-soft)}
+
+/* fő rész */
+main{padding:28px 40px 56px;min-width:0}
+.wrap{max-width:1480px}
+.crumb{font-weight:600;color:var(--ink-soft);margin:0 0 20px}
+.crumb b{color:var(--ink);font-weight:700}
+
+.hero{background:var(--hero);border-radius:34px;padding:36px 46px 34px;display:flex;justify-content:space-between;align-items:flex-end;gap:28px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,5.4vw,72px);line-height:1;margin:0 0 16px;letter-spacing:.5px}
+.hero p{margin:3px 0;max-width:62ch;font-size:15.5px}
+.steps{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;flex:none}
+.hero>div:first-child{min-width:0}
+.step{display:flex;align-items:center;gap:9px;background:#fff;border-radius:999px;padding:9px 16px 9px 9px;font-weight:700;font-size:14px;white-space:nowrap}
+.step b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px}
+
+.tabs{display:flex;gap:9px;margin:30px 0 20px}
+.tab{border:0;border-radius:10px;background:#fff;padding:12px 18px;font-weight:700;cursor:pointer}
+.tab:hover{background:#faf8ff}
+.tab.active{background:var(--ink);color:#fff}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);grid-template-areas:"lyrics side" "prep mp3";gap:26px;align-items:start}
+.a-lyrics{grid-area:lyrics;align-self:stretch}
+.a-side{grid-area:side;display:flex;flex-direction:column;gap:22px}
+.a-prep{grid-area:prep}
+.a-mp3{grid-area:mp3}
+
+.card{background:#fff;border-radius:30px;padding:30px}
+.card h2{display:flex;align-items:center;gap:13px;margin:0 0 22px;font-size:19px;font-weight:700}
+.num{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:var(--badge);color:var(--badge-ink);font-size:15px;font-weight:700}
+.lyrics-card{display:flex;flex-direction:column;height:100%}
+
+label.l{display:block;font-weight:600;font-size:14px;margin:0 0 7px}
+.field{margin-bottom:18px}
+input[type=text],select,textarea{width:100%;border:0;border-radius:16px;background:var(--tint);padding:14px 18px;color:var(--ink)}
+input::placeholder,textarea::placeholder{color:#8a7a70}
+input[type=text]:focus,select:focus,textarea:focus{outline:2px solid var(--badge-ink)}
+textarea{resize:vertical;line-height:1.6}
+.lyrics-card textarea#lyrics{flex:1;min-height:300px}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' fill='none' stroke='%232e1507' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 18px center;padding-right:44px}
+.hint{color:var(--ink-soft);font-size:13.5px;margin:12px 0 0}
+
+.modes{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.mode{position:relative;flex:1 1 230px}
+.mode input{position:absolute;opacity:0}
+.mode span{display:block;border-radius:14px;background:var(--tint);padding:12px 16px;font-size:14px;cursor:pointer;border:2px solid transparent}
+.mode b{display:block;font-weight:700}
+.mode input:checked+span{border-color:var(--ink);background:#fff}
+.mode input:focus-visible+span{outline:3px solid var(--badge-ink);outline-offset:2px}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:12px 18px;font-weight:700;cursor:pointer;text-decoration:none;background:var(--ink);color:#fff}
+.btn:hover{background:#4a2610}
+.btn.soft{background:var(--badge);color:var(--ink)}
+.btn.soft:hover{background:#d6c9f2}
+
+.checks{background:var(--tint);border-radius:16px;padding:14px 18px;margin-top:6px}
+.checks b{display:block;margin-bottom:6px}
+.check{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:14px}
+.check input{width:18px;height:18px;accent-color:var(--ink);flex:none}
+
+.cta{width:100%;height:70px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-size:20px;font-weight:700;cursor:pointer;transition:background .15s}
+.cta:hover:not(:disabled){background:#4a2610}
+.cta:disabled{background:var(--off);cursor:not-allowed}
+.status{margin:2px 6px 0;font-size:14px;color:var(--ink-soft);min-height:21px}
+
+.placeholder{border:2px dashed var(--line);border-radius:20px;background:#faf8ff;padding:44px 24px;text-align:center;color:var(--ink-soft)}
+.line-preview{max-height:350px;overflow:auto;margin-top:12px;padding:8px 2px}.line-row{display:flex;gap:10px;align-items:baseline;padding:6px 4px;font-size:14px}.line-row.hu{color:#71422b}.line-row.en{color:#0069a3}.line-row.unknown{color:#98510f}.lang-tag{flex:none;min-width:32px;border-radius:6px;padding:1px 5px;text-align:center;font-size:11px;font-weight:700;background:#f5eae3}.line-row.en .lang-tag{background:#d6efff}.line-row.unknown .lang-tag{background:#fff0d1}.line-row select{width:60px;flex:none;max-width:65px;padding:2px 18px 2px 5px;border:1px solid #ddd;background-color:#fff;border-radius:5px;font-size:11px}.processing-overlay{position:fixed;inset:0;z-index:40;background:#ece6f8eb;display:grid;place-items:center;padding:20px}.processing-box{background:#fff;border-radius:30px;padding:40px;max-width:550px;width:100%;text-align:center;box-shadow:0 18px 50px #2e15071a}.processing-box h2{font-family:var(--display);font-size:44px;margin:0 0 15px}.progress-track{height:12px;background:#ede6f9;border-radius:20px;overflow:hidden}.progress-bar{height:100%;background:#7656bb;width:0;transition:width .18s}.audit{margin:14px 0 0;font-size:14px;font-weight:600}
+.audit.ok{color:var(--ok)}.audit.warn{color:var(--warn)}
+#outstyle{min-height:150px}
+#outlyrics{min-height:380px;font-size:13.5px}
+
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:170px;padding:24px;text-align:center;border:2px dashed var(--line);border-radius:20px;background:#faf8ff;cursor:pointer}
+.drop:hover,.drop.over{background:var(--tint);border-color:var(--badge-ink)}
+.drop:focus-within{outline:3px solid var(--badge-ink);outline-offset:3px}
+.drop.filled{border-style:solid}
+.drop svg{color:var(--badge-ink)}
+#player{width:100%;margin-top:18px}
+#download{margin-top:14px}
+.note{margin-top:18px;background:#fff6e2;border-radius:14px;padding:12px 16px;font-size:13.5px}
+
+@media(max-width:1100px){
+  .grid{grid-template-columns:1fr;grid-template-areas:"lyrics" "side" "prep" "mp3"}
+  .hero{flex-direction:column;align-items:flex-start}
+  .steps{justify-content:flex-start;flex:initial}
+}
+@media(max-width:760px){
+  .app{display:block}
+  .side{padding:14px 14px 4px}
+  .side hr,.side h3,.projects,.foot{display:none}
+  main{padding:16px 14px 40px}
+  .hero{padding:26px 24px;border-radius:26px}
+  .card{padding:22px;border-radius:24px}
+  .tabs{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* v2.2.1: diszkrét verziópanel és javított dialógusok */
+.version-footer{margin-top:10px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:12px;color:#665779}.version-footer>span{font-weight:700;color:#735b92;margin-right:2px}
+.version-link{background:#fff9;border:1px solid #d9c9ee;border-radius:999px;padding:6px 10px;color:#62439d;font:inherit;font-weight:650;text-decoration:none;cursor:pointer;transition:background .16s,border-color .16s,box-shadow .16s}
+.version-link:hover,.version-link:focus-visible{color:#341b66;background:#fff;border-color:#b59adf;box-shadow:0 3px 10px #6d4e991a;outline:none}
+.dialog-backdrop{position:fixed;inset:0;z-index:100;background:#24152d88;display:grid;place-items:center;padding:20px}
+.dialog-backdrop.hide{display:none!important}
+.dialog-panel{width:min(100%,480px);background:#fff;border-radius:28px;padding:34px;box-shadow:0 24px 80px #2e174055;color:#341e17}
+.dialog-panel h2{font-family:var(--display);font-size:42px;margin:0 0 12px}
+.dialog-panel p{line-height:1.55;color:#695b70}
+.dialog-panel label{display:block;font-weight:700;margin:18px 0 7px}
+.dialog-panel input{width:100%;padding:14px;border:1px solid #cfc0e9;border-radius:12px;font:inherit}
+.dialog-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.dialog-actions button{border:0;border-radius:12px;padding:12px 17px;font:inherit;font-weight:700;cursor:pointer;background:#e8e0f7;color:#422c6c}
+.dialog-actions .primary{background:#39200f;color:white}
+.changelog{margin:12px 0;padding-left:22px;line-height:1.8;color:#463850}
+.login-note{font-size:13px;background:#f4effc;border-radius:12px;padding:12px;margin-top:15px}
+@media(max-width:760px){.version-footer{display:flex}.side .foot{display:block}}
+.handoff-panel{margin-top:20px;background:#f5efff;border:1px solid #dfd0f7;border-radius:18px;padding:20px;color:#3d2752}.handoff-panel h3{margin:0 0 10px;font-size:18px}.handoff-panel p{line-height:1.65;margin:8px 0 14px}.handoff-panel .actions{display:flex;gap:9px;flex-wrap:wrap}.secondary-panel{background:#faf8fd;border-style:dashed}.handoff-panel .note{font-size:12px;opacity:.85}.handoff-panel .btn{display:inline-flex;align-items:center;text-decoration:none}#copy-chatgpt{background:#4e337c;color:#fff}#copy-chatgpt:hover{background:#352052;color:#fff}
+
+/* 2.1: egységes, saját lenyíló menük */
+.music-select-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;overflow:hidden!important}
+.music-picker{position:relative;width:100%;margin-top:4px}
+.music-picker-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f7f3fd;border:1px solid #e7dcf5;border-radius:17px;padding:14px 16px;text-align:left;color:#351d13;cursor:pointer;transition:background .16s,border-color .16s,box-shadow .16s}
+.music-picker-trigger:hover{background:#f0e9fb;border-color:#b8a1e7}.music-picker-trigger:focus-visible{outline:3px solid #bba0ee;outline-offset:2px}
+.music-picker.open .music-picker-trigger{border-color:#7954c4;box-shadow:0 0 0 2px #7954c422}
+.music-picker-chevron{font-size:17px;color:#67449d;transition:transform .18s}.music-picker.open .music-picker-chevron{transform:rotate(180deg)}
+.music-picker-menu{position:fixed;z-index:100;background:white;border:1px solid #e8dff4;border-radius:17px;padding:6px;box-shadow:0 14px 35px #36204b27;max-height:min(330px,55vh);overflow-y:auto;min-width:220px}
+.music-picker-option{width:100%;border:0;border-radius:11px;background:transparent;text-align:left;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;color:#351d13;cursor:pointer;font:inherit;font-size:14px}
+.music-picker-option:hover,.music-picker-option:focus-visible{background:#f2ecfc;outline:none}.music-picker-option.selected{background:#eee6fa;color:#6540a5;font-weight:700}
+.music-picker-option .tick{color:#7551b9;font-size:17px}
+.style-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:9px}.style-actions .btn{font-size:13px;padding:9px 13px}.style-note{font-size:12px;color:#95889e}.profile-summary{color:#88769c!important;font-size:11px!important;line-height:1.5}.version-footer{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:7px}.version-footer .version-link{border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;font-size:11px!important;color:#948b9b!important;text-decoration:underline;text-decoration-color:#c8c1ce;text-underline-offset:3px}.version-footer .version-link:hover{color:#655579!important;text-decoration-color:#655579!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="logo">GyA</span>Gyakorlatias Angol</div>
+    <button class="newbtn" id="new"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3v14M3 10h14"/></svg>Új dal</button>
+    <hr>
+    <h3>Korábbi dalok</h3>
+    <div id="projects" class="projects"></div>
+    <input id="project-import" type="file" accept=".json,application/json" class="hide"><div class="foot">Tanulj Dalolva · dalkészítő<br>prototípus, helyi tárolás<div class="version-footer"><span>v2.3.0</span><button class="version-link" id="show-changelog" type="button">Újdonságok</button><button class="version-link" id="logout" type="button">Kijelentkezés</button></div></div>
+  </aside>
+
+  <main>
+  <div class="wrap">
+    <p class="crumb">Tanulj Dalolva · <b>Dalkészítő</b></p>
+
+    <section class="hero">
+      <div>
+        <h1>Új dal</h1>
+        <p>Írd be a dalszöveget, válaszd ki a stílust, és a Suno elkészíti belőle a tanulódalt.</p>
+        <p>Utána meghallgathatod, javíthatod, és az MP3 már mehet is a videókészítőbe.</p>
+      </div>
+      <div class="steps" aria-label="Lépések">
+        <span class="step"><b>1</b>Szöveg</span>
+        <span class="step"><b>2</b>Beállítások</span>
+        <span class="step"><b>3</b>Suno</span>
+        <span class="step"><b>4</b>MP3</span>
+      </div>
+    </section>
+
+
+
+    <div class="grid">
+
+      <section class="card lyrics-card a-lyrics">
+        <h2><span class="num">1</span>Dalszöveg</h2>
+        <div class="field">
+          <label class="l" for="title">Dal címe</label>
+          <input type="text" id="title" placeholder="Pl. 16. My Daily Life">
+        </div>
+        <label class="l" for="lyrics">Dalszöveg – egyszerű szöveg vagy kész Suno-lyrics</label>
+        <textarea id="lyrics" placeholder="Másold be a dal szövegét, soronként úgy, ahogy elhangzik.&#10;Az első sor lehet a dal száma és címe, pl.:&#10;16. My Daily Life&#10;Első sor…&#10;Második sor…"></textarea>
+        <p class="hint">A magyar és az angol mondatokat változatlanul megőrizzük.</p><div id="linepreview" class="line-preview" aria-label="Nyelvenként színezett dalszöveg"></div>
+
+        <div class="modes" role="radiogroup" aria-label="Szövegfeldolgozás">
+          <label class="mode"><input type="radio" name="mode" value="auto" checked><span><b>Automatikus</b>egyszerű magyar–angol szöveg</span></label>
+          <label class="mode"><input type="radio" name="mode" value="manual"><span><b>Haladó</b>kész Suno-tagek megtartása</span></label>
+        </div>
+
+        <div class="actions">
+          <button class="btn soft" id="import" type="button">TXT-fájl beolvasása</button>
+          <button class="btn soft" id="save" type="button">Projekt mentése</button>
+          <input type="file" id="file" accept=".txt,text/plain" class="hide">
+        </div>
+      </section>
+
+      <div class="a-side">
+        <section class="card">
+          <h2><span class="num">2</span>Zenei beállítások</h2>
+          <div class="field">
+            <label class="l" for="style">Zenei stílus</label>
+            <select id="style">
+              <option value="Modern melodic pop, uplifting educational pop, memorable catchy chorus">Modern pop (ajánlott)</option>
+              <option value="Warm acoustic pop, gentle guitar and piano, clear vocals">Acoustic pop</option>
+              <option value="Soft rock, clean guitars, steady uplifting beat">Soft rock</option>
+              <option value="Upbeat dance pop, clean rhythmic production">Dance pop</option>
+              <option value="Light jazz pop, warm piano and subtle rhythm">Jazz pop</option>
+              <option value="Dreamy indie pop, soft guitars and melodic vocals">Indie pop</option>
+              <option value="Bright synth pop, retro synthesizers and catchy hooks">Synth pop</option>
+              <option value="Groovy funk pop, crisp bass and playful rhythmic guitar">Funk pop</option>
+              <option value="Relaxed reggae pop, offbeat guitars and sunny groove">Reggae pop</option>
+              <option value="Warm country pop, acoustic guitar and light drums">Country pop</option>
+              <option value="Lo-fi chill pop, mellow beat and soft piano">Lo-fi chill pop</option>
+              <option value="Soulful R&B pop, smooth groove and expressive melody">Soul / R&B</option>
+              <option value="Latin pop, bright percussion and danceable acoustic rhythms">Latin pop</option>
+              <option value="Cinematic pop, expansive harmonies and uplifting orchestration">Cinematic pop</option>
+              <option value="Disco pop, funky bass and shimmering rhythmic strings">Disco pop</option>
+              <option value="Gentle folk pop, acoustic strings and organic percussion">Folk pop</option>
+            </select>
+            <div class="style-actions"><button class="btn soft" type="button" id="random-style">⇄ Véletlen stílus</button><span class="style-note">Új hangzás egy kattintással</span></div>
+          </div>
+          <div class="field">
+            <label class="l" for="mood">Hangulat</label>
+            <select id="mood"><option value="uplifting and motivational">Vidám, motiváló</option><option value="calm and gentle">Nyugodt, kellemes</option><option value="energetic and upbeat">Energikus, lendületes</option><option value="warm and friendly">Meleg, barátságos</option></select>
+          </div>
+          <div class="field">
+            <label class="l" for="duration">Célhossz</label>
+            <select id="duration">
+              <option value="flexible duration based on the complete lyrics" selected>Automatikus – a teljes szöveghez igazítva</option>
+              <option value="2 minutes 30 seconds">Rövid – kb. 2:30</option>
+              <option value="3 minutes 20 seconds">Normál – kb. 3:20</option>
+              <option value="4 minutes">4:00</option>
+              <option value="5 minutes">5:00</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="l" for="voice">Hangbeállítás</label>
+            <select id="voice">
+              <option value="native Hungarian adult female spoken voice, clear standard British English female singing voice">Magyar női beszéd + brit angol női ének</option>
+              <option value="native Hungarian adult male spoken voice, clear standard British English male singing voice">Magyar férfi beszéd + brit angol férfi ének</option>
+              <option value="native Hungarian adult female spoken voice, clear standard British English male singing voice">Magyar női beszéd + brit angol férfi ének</option>
+              <option value="native Hungarian adult male spoken voice, clear standard British English female singing voice">Magyar férfi beszéd + brit angol női ének</option>
+            </select>
+          </div>
+          <div class="checks">
+            <b>Alapértelmezett Suno-instrukciók</b>
+            <label class="check"><input type="checkbox" id="recommended" checked>A GyakAngol ajánlott instrukcióit használja</label>
+            <label class="check"><input type="checkbox" id="pause" checked>Rövid szünet a magyar és angol sorok között</label>
+          </div>
+        </section>
+        <button class="cta" id="prepare" type="button" disabled>Suno-szöveg előkészítése</button>
+        <p class="status" id="status" role="status">A ChatGPT–Suno kapcsolat használható a generálási kérés átmásolásával.</p>
+      </div>
+
+      <section class="card a-prep">
+        <h2><span class="num">3</span>Suno-előnézet</h2>
+        <div id="emptyprep" class="placeholder">Itt jelenik meg a Sunónak szánt stílus és dalszöveg, miután előkészítetted. Másolás előtt még szerkesztheted.</div>
+        <div id="prepared" class="hide">
+          <div class="field">
+            <label class="l" for="outstyle">Style of Music – szerkeszthető</label>
+            <textarea id="outstyle" spellcheck="false"></textarea>
+          </div>
+          <label class="l" for="outlyrics">Lyrics – szerkeszthető</label>
+          <textarea id="outlyrics" spellcheck="false"></textarea>
+          <p class="audit" id="audit"></p>
+          <div class="actions">
+            <button class="btn soft" id="copystyle" type="button">Stílus másolása</button>
+            <button class="btn soft" id="copylyrics" type="button">Dalszöveg másolása</button>
+            <a class="btn" href="https://suno.com/create" target="_blank" rel="noopener">Suno megnyitása ↗</a>
+            <button class="btn primary" id="copy-chatgpt" type="button">✦ Teljes Suno-kérés másolása</button>
+          </div>
+          <div class="handoff-panel">
+            <h3>✦ ChatGPT + Suno</h3>
+            <p>1. Készítsd elő a dalt. 2. Másold a teljes kérést. 3. Nyisd meg a ChatGPT-t, válaszd a Suno plugint, és illeszd be a szöveget. 4. A kész dalokat a Suno Libraryban találod.</p>
+            <div class="actions"><a class="btn" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT megnyitása ↗</a><a class="btn soft" href="https://suno.com/" target="_blank" rel="noopener noreferrer">Suno Library ↗</a></div>
+            <p class="note">A másolás nem indít automatikus generálást, és nem használja a Suno-kreditjeidet. A generálást a ChatGPT-ben kell jóváhagynod.</p>
+          </div>
+          <div class="handoff-panel secondary-panel"><h3>◌ Közvetlen Suno – előkészítés alatt</h3><p>A közvetlen generálás, a két dalváltozat és az MP3-letöltés akkor aktiválható, ha rendelkezésre áll az engedélyezett, szerveroldali Suno-hozzáférés. API-kulcsot nem kérünk és nem tárolunk a böngészőben.</p></div>
+        </div>
+      </section>
+
+      <section class="card a-mp3">
+        <h2><span class="num">4</span>Elkészült MP3</h2>
+        <label class="drop" id="drop" for="mp3">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <span id="dropText">Húzd ide az MP3 fájlt, vagy kattints a tallózáshoz</span>
+        </label>
+        <input type="file" id="mp3" class="vh" accept="audio/mpeg,.mp3,audio/*">
+        <audio id="player" controls class="hide"></audio>
+        <a id="download" class="btn soft hide" download="gyakang-dal.mp3">MP3 letöltése</a>
+        <p class="note"><b>Közvetlen generálás: még nem aktív.</b> A ChatGPT + Suno módban a kész dal a Suno Libraryba kerül. Itt egy letöltött MP3-at tudsz ellenőrizni. Az elkészült fájlt viszont itt meghallgathatod.</p>
+      </section>
+
+    </div>
+  </div>
+  </main>
+</div>
+
+<div class="dialog-backdrop hide" id="changelog-dialog" role="dialog" aria-modal="true" aria-labelledby="changelog-title">
+ <div class="dialog-panel"><h2 id="changelog-title">Újdonságok</h2><p>A Dalstúdió verziótörténete</p>
+ <ul class="changelog"><li><b>2.3.0:</b> valódi szerveroldali jelszavas belépés, biztonságos munkamenet és kijelentkezés.</li><li><b>2.2.1:</b> a zenei stílusok és a többi legördülő menü görgetése javítva: egérgörgő és görgetősáv.</li><li><b>2.2.0:</b> automatikus dalhossz, 16 zenei stílus, véletlen stílus, hangulat, mentett zenei profilok és profilátvétel.</li><li><b>2.1.1:</b> belépőképernyő és Újdonságok ablak javítása, finomított verziópanel.</li><li><b>2.1.0:</b> elegáns lenyíló menük, négy hangkombináció, egydalos felület, pontos ismétléskezelés, belépőképernyő finomítása.</li><li><b>2.0.0:</b> ChatGPT + Suno generálási csomag, másolás egy kattintással, Suno Library munkafolyamat, közvetlen integráció előkészítése.</li><li><b>1.5.0:</b> belépőképernyő előnézete, diszkrét verziószám, változásnapló.</li><li><b>1.4.0:</b> projektmenü és szövegellenőrzés javítása.</li><li><b>1.3.0:</b> HU/EN előnézet és projektkezelés.</li><li><b>1.2.0:</b> arculat és dalszerkezet finomítása.</li></ul>
+ <div class="dialog-actions"><button class="primary" id="close-changelog" type="button">Bezárás</button></div></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);const KEY='gyakang-dalstudio-projects-v1';let current=null,blobUrl=null;const fields=['title','lyrics','style','mood','duration','voice','recommended','pause'];const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}};const state=()=>Object.fromEntries(fields.map(k=>[k,$(k).type==='checkbox'?$(k).checked:$(k).value]));function fill(p){lineOverrides={};fields.forEach(k=>{if(k in p){if($(k).type==='checkbox')$(k).checked=p[k];else if([...$(k).options||[]].some(o=>o.value===p[k])||$(k).tagName!=='SELECT')$(k).value=p[k]}});if(p.mode){const radio=document.querySelector('input[name="mode"][value="'+p.mode+'"]');if(radio)radio.checked=true}if(p.outlyrics){$('outlyrics').value=p.outlyrics;$('outstyle').value=p.outstyle||'';setPrepared(true);audit()}else setPrepared(false);renderLines();if(typeof syncMusicPickers==='function')syncMusicPickers();$('status').textContent='Projekt betöltve. Készítsd elő a Suno-bevitelt.'}function render(){const box=$('projects');box.replaceChildren();const list=read();if(!list.length){const e=document.createElement('p');e.className='empty';e.textContent='Még nincs mentett dal.';box.append(e)}list.forEach(p=>{const row=document.createElement('div');row.className='project-row'+(p.id===current?' active':'');const b=document.createElement('button');b.className='project';const strong=document.createElement('strong');strong.textContent=p.title||'Névtelen dal';const sm=document.createElement('small');sm.textContent=new Date(p.updated).toLocaleString('hu-HU');b.append(strong,sm);const profile=document.createElement('small');profile.className='profile-summary';const genreName=[...$('style').options].find(o=>o.value===p.style)?.textContent||'Korábbi stílus';const moodName=[...$('mood').options].find(o=>o.value===p.mood)?.textContent||'Vidám';profile.textContent='♫ '+genreName+' · '+moodName;b.append(profile);b.onclick=()=>{current=p.id;fill(p);render()};const more=document.createElement('button');more.className='more';more.textContent='⋯';more.setAttribute('aria-label','Projekt műveletei: '+(p.title||'Névtelen dal'));more.onclick=e=>{e.stopPropagation();document.querySelectorAll('.project-menu').forEach(el=>el.remove());const menu=document.createElement('div');menu.className='project-menu';for(const [name,action] of [['Szerkesztés',()=>{current=p.id;fill(p);render()}],['Átnevezés',()=>{const name=prompt('Új dalcím:',p.title||'');if(name===null||!name.trim())return;let all=read();const item=all.find(x=>x.id===p.id);if(item){item.title=name.trim();item.updated=Date.now();localStorage.setItem(KEY,JSON.stringify(all));if(current===p.id)$('title').value=item.title;render()}}],['Zenei profil átvétele',()=>applyProfile(p)],['Letöltés',()=>downloadProject(p)],['Törlés',()=>{if(!confirm('Biztosan törlöd ezt a projektet?'))return;localStorage.setItem(KEY,JSON.stringify(read().filter(x=>x.id!==p.id)));if(current===p.id){current=null;$('title').value='';$('lyrics').value='';lineOverrides={};setPrepared(false);renderLines();renderLines()}render()}]]){const btn=document.createElement('button');btn.textContent=name;if(name==='Törlés')btn.className='danger';btn.onclick=()=>{menu.remove();action()};menu.append(btn)}document.body.append(menu);const rect=more.getBoundingClientRect();const width=190;const height=menu.getBoundingClientRect().height;let x=rect.right+8;if(x+width>window.innerWidth-12)x=Math.max(12,rect.left-width-8);let y=Math.max(12,Math.min(rect.top,window.innerHeight-height-12));menu.style.position='fixed';menu.style.left=x+'px';menu.style.top=y+'px';};row.append(b,more);box.append(row)})}
+function applyProfile(p){for(const id of ['style','mood','duration','voice','recommended','pause']){if(!(id in p))continue;const el=$(id);if(el.type==='checkbox')el.checked=p[id];else el.value=p[id]}syncMusicPickers();$('status').textContent='Zenei profil átvéve. Az aktuális dalszöveg változatlan maradt.'}
+function downloadProject(p){const data={format:'gyakang-dalstudio-project',version:'2.2.0',...p};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=(p.title||'dal').replace(/[\/:*?"<>|]/g,'_')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function save(){const p={...state(),mode:document.querySelector('input[name="mode"]:checked').value,id:current||String(Date.now()),updated:Date.now(),outstyle:$('outstyle').value,outlyrics:$('outlyrics').value};let all=read().filter(x=>x.id!==p.id);all.unshift(p);try{localStorage.setItem(KEY,JSON.stringify(all));current=p.id;render();$('status').textContent='Projekt mentve ebben a böngészőben.'}catch{$('status').textContent='Nem sikerült menteni: a böngésző tárhelye nem elérhető.'}}
+$('save').onclick=save;$('new').onclick=()=>{current=null;$('title').value='';$('lyrics').value='';lineOverrides={};setPrepared(false);renderLines();$('status').textContent='Új dal. A beállítások megmaradtak.';render()};$('import').onclick=()=>$('file').click();$('file').onchange=async e=>{let f=e.target.files[0];if(!f)return;const raw=await f.text();const lines=raw.replace(/^\uFEFF/,'').split(/\r?\n/);const first=(lines[0]||'').trim();const hasTitle=/^\d+\.\s+/.test(first);$('title').value=hasTitle?first:f.name.replace(/\.txt$/i,'');$('lyrics').value=(hasTitle?lines.slice(1):lines).join('\n');lineOverrides={};renderLines();sync();$('status').textContent='TXT-fájl beolvasva.';e.target.value=''};let preparedStyle='',preparedLyrics='';
+const instruction='[Suno Voice and Language Instruction]\nCreate a complete full-length song lasting at least three minutes and twenty seconds. Do not finish early and do not skip any instrumental section, repeated line, final chorus or outro. Hungarian sections: native Hungarian adult female spoken voice, slow, warm and perfectly clear. English sections: adult female singing voice in clear standard British English. No overlapping vocals, no backing vocals over target sentences, no echo effects, no swallowed words, no ad-libs. Leave a short pause after every Hungarian prompt. Preserve all English repetitions exactly as supplied in the lyrics.';
+function makeInstruction(s){const genders=s.voice.match(/Hungarian adult (female|male) spoken voice, clear standard British English (female|male) singing voice/);const huGender=genders?.[1]||'female';const enGender=genders?.[2]||'female';return '[Suno Voice and Language Instruction]\nCreate a complete full-length song lasting at least '+s.duration+'. Do not finish early and do not skip any instrumental section, repeated line, final chorus or outro. Hungarian sections: native Hungarian adult '+huGender+' spoken voice, slow, warm and perfectly clear. English sections: adult '+enGender+' singing voice in clear standard British English. No overlapping vocals, no backing vocals over target sentences, no echo effects, no swallowed words, no ad-libs.'+(s.pause?' Leave a short pause after every Hungarian prompt.':'')+' Preserve all provided teaching lines and repetitions exactly as written; do not add extra repetitions.'}
+let lineOverrides={};function effectiveLang(line,index){return lineOverrides[index]||lang(line)}
+function renderLines(){const el=$('linepreview');el.replaceChildren();const {lines}=parseRaw($('lyrics').value);lines.forEach((line,i)=>{const l=effectiveLang(line,i);const row=document.createElement('div');row.className='line-row '+(l||'unknown');const sel=document.createElement('select');sel.setAttribute('aria-label','Sor nyelve: '+line);for(const [val,txt] of [['hu','HU'],['en','EN'],['','?']]){const opt=document.createElement('option');opt.value=val;opt.textContent=txt;sel.append(opt)}sel.value=l||'';sel.onchange=()=>{lineOverrides[i]=sel.value||null;renderLines()};const span=document.createElement('span');span.textContent=line;row.append(sel,span);el.append(row)})}
+const headers={intro:'[Instrumental Intro - 8 Bars, Establish the Melody, No Vocals]',interlude:'[Instrumental Interlude - 8 Bars, Continue the Same Melody, No Vocals]',build:'[Instrumental Build - 16 Bars, No Vocals, Build Towards the Final Chorus]',outro:'[Instrumental Outro - 8 Bars, Gentle Complete Ending, No Vocals]'};
+function lang(line){if(/[áéíóöőúüűÁÉÍÓÖŐÚÜŰ]/.test(line))return 'hu';let en=/\b(the|and|you|your|i|we|they|he|she|my|to|at|with|never|usually|sometimes|often|every|day|is|are|can|do|go|work|friends|bed|up|walk|get|cook|too|late|matters|seven)\b/i.test(line);let hu=/\b(a|az|egy|hogy|nem|van|vagy|és|majd|meg|minden|nap|néha|soha|gyakran|figyeld|mond|hallgasd|életem|szokásainkról)\b/i.test(line);if(en&&!hu)return 'en';if(hu&&!en)return 'hu';return null}
+function parseRaw(raw){let lines=raw.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);let title='';if(lines.length&&/^\d+\.\s+/.test(lines[0]))title=lines.shift();return {title,lines};}
+function section(tag,lines){return tag+'\n'+lines.join('\n')}
+function buildAuto(raw){const {title,lines}=parseRaw(raw);if(!lines.length)throw Error('Nem található feldolgozható dalszöveg.');const ambiguous=lines.map((v,i)=>({v,i})).filter(o=>!effectiveLang(o.v,o.i));if(ambiguous.length)throw Error('Nem egyértelmű a nyelv a következő soroknál: '+ambiguous.slice(0,4).map(o=>(o.i+1)+'. '+o.v).join(' | ')+'. Használd a Haladó módot, vagy javítsd a szöveget.');
+let groups=[];for(const [i,line] of lines.entries()){const l=effectiveLang(line,i);if(!groups.length||groups[groups.length-1].lang!==l)groups.push({lang:l,lines:[]});groups[groups.length-1].lines.push(line)}
+let parts=[makeInstruction(state()),headers.intro],pattern='rugalmas';
+// A szabványos tanulódal-minta: HU2 EN4 HU2 EN4 HU2 HU/EN váltakozó EN8 HU1 EN1.
+// Azonos nyelvű szakaszok szomszédsága a csoportosításban megmarad; a 3. magyar pár a Bridge.
+// A mintadal felépítését sorpozíciók és a tanulómondatok ismétlődése alapján ismerjük fel.
+// A szakaszhatárokat NEM a nyelvváltások számából számoljuk (az túl sok Chorus-t hozna létre).
+const standard=lines.length>=30 && lines.slice(0,2).every((x,i)=>effectiveLang(x,i)==='hu') &&
+ lines.slice(2,6).every((x,i)=>effectiveLang(x,i+2)==='en') && lines.slice(6,8).every((x,i)=>effectiveLang(x,i+6)==='hu') &&
+ lines.slice(8,12).every((x,i)=>effectiveLang(x,i+8)==='en') && lines.slice(12,14).every((x,i)=>effectiveLang(x,i+12)==='hu') &&
+ lines.slice(-2).map((x,i)=>effectiveLang(x,lines.length-2+i)).join(',')==='hu,en' && lines.slice(-10,-2).every((x,i)=>effectiveLang(x,lines.length-10+i)==='en') &&
+ lines.slice(14,-10).length>=3 && lines.slice(14,-10).some((x,i)=>effectiveLang(x,i+14)==='hu') &&
+ lines.slice(14,-10).some((x,i)=>effectiveLang(x,i+14)==='en');
+if(standard){
+ pattern='tanulódal-minta';
+ parts.push(section('[Verse 1 - Hungarian Spoken Word, Clear and Natural]',lines.slice(0,2)));
+ parts.push(section('[Chorus 1 - English Singing, Clear Pronunciation]',lines.slice(2,6)));
+ parts.push(headers.interlude);
+ parts.push(section('[Verse 2 - Hungarian Spoken Word, Clear and Natural]',lines.slice(6,8)));
+ parts.push(section('[Chorus 2 - English Singing, Clear Pronunciation]',lines.slice(8,12)));
+ parts.push(section('[Bridge - Hungarian Spoken Word, Slow and Clear]',lines.slice(12,14)));
+ parts.push(section('[Repeat Chorus - Hungarian Spoken, English Sung Twice]',lines.slice(14,-10)));
+ parts.push(headers.build);
+ parts.push(section('[Final Teaching Chorus - English Singing, Strong and Clear, Complete Every Line]',lines.slice(-10,-2)));
+ parts.push(section('[Outro - Hungarian Spoken, English Sung]',lines.slice(-2)));
+}else{
+ // Más szerkezeteknél minden eredeti sort megtartunk, és a zenei szakaszok kézzel finomíthatók.
+ groups.forEach((g,i)=>{if(i===2)parts.push(headers.interlude);if(i===groups.length-2)parts.push(headers.build);
+ parts.push(section(g.lang==='hu'?`[Verse ${i+1} - Hungarian Spoken Word, Clear and Natural]`:`[Chorus ${i+1} - English Singing, Clear Pronunciation]`,g.lines))});
+ if(groups.length<=2)parts.push(headers.build)
+}
+parts.push(headers.outro);return {title,lyrics:parts.join('\n\n'),lines,pattern};}
+function spokenLines(preview){return preview.split(/\r?\n/).map(x=>x.trim()).filter(x=>x&&!/^\[.*\]$/.test(x)&&!/^Create a complete full-length song lasting/.test(x));}
+function audit(){let source=parseRaw($('lyrics').value).lines;let result=spokenLines($('outlyrics').value);const title=$('title').value.trim();if(result.length&&title&&result[0]===title)result.shift();const rawFirst=$('lyrics').value.trim().split(/\r?\n/)[0]?.trim();if(result.length&&/^\d+\.\s+/.test(result[0])&&(result[0]===rawFirst||result[0]===title))result.shift();let missing=[],extra=[];let counts=new Map();source.forEach(x=>counts.set(x,(counts.get(x)||0)+1));result.forEach(x=>counts.set(x,(counts.get(x)||0)-1));for(const [line,count] of counts){if(count>0)missing.push(`${count}× ${line}`);if(count<0)extra.push(`${-count}× ${line}`)}let ordered=source.length===result.length&&source.every((x,i)=>x===result[i]);$('audit').textContent=ordered?'✓ Ellenőrizve: minden eredeti sor és ismétlés megvan, változatlan sorrendben.':`⚠ Ellenőrizd az előnézetet! ${missing.length?'Hiányzó: '+missing.slice(0,3).join(' | ')+'. ':''}${extra.length?'Új/többlet: '+extra.slice(0,3).join(' | ')+'. ':''}${!missing.length&&!extra.length?'A sorok sorrendje megváltozott.':''}`;$('audit').className='audit '+(ordered?'ok':'warn')}
+$('prepare').onclick=()=>{const s=state();if(!s.lyrics.trim()){$('status').textContent='Előbb illeszd be a dalszöveget.';return}const common=s.recommended?'bilingual language-learning song, precise pronunciation, no overlapping vocals, no backing vocals over learning phrases, no heavy reverb, no vocal distortion, no ad-libs, complete every section, do not end early, full-length song lasting at least '+s.duration+', ':'';preparedStyle=s.style+', '+s.mood+', '+common+s.voice+(s.pause?', short pause between Hungarian and English':'');let mode=document.querySelector('input[name="mode"]:checked').value;$('processing').classList.remove('hide');$('progressbar').style.width='30%';$('processing-message').textContent='Nyelvi sorok és dalszerkezet ellenőrzése…';try{if(mode==='auto'){let built=buildAuto(s.lyrics);preparedLyrics=built.lyrics;if(built.title&&!$('title').value)$('title').value=built.title;$('status').textContent='Suno-előnézet elkészült ('+built.pattern+'). Ellenőrizd a szerkezetet, majd másold át a Sunóba.'}else{preparedLyrics=s.lyrics;$('status').textContent='Haladó Suno-előnézet elkészült.'}}catch(e){$('status').textContent='Feldolgozási hiba: '+e.message;$('processing').classList.add('hide');return}$('outstyle').value=preparedStyle;$('outlyrics').value=preparedLyrics;setPrepared(true);audit();$('progressbar').style.width='100%';$('processing-message').textContent='Suno-előnézet elkészült.';requestAnimationFrame(()=>requestAnimationFrame(()=>$('processing').classList.add('hide')));save();$('status').textContent='Előnézet kész. Ellenőrizd, szerkeszd, majd másold át a Sunóba.'};
+async function copy(v){try{await navigator.clipboard.writeText(v);$('status').textContent='Vágólapra másolva.'}catch{const t=document.createElement('textarea');t.value=v;document.body.append(t);t.select();document.execCommand('copy');t.remove();$('status').textContent='Másolási kísérlet kész.'}}
+function fullSunoPrompt(){
+ const title=$('title').value.trim()||'GyakAngol tanulódal';
+ return `Use the connected Suno plugin to create two versions of the following bilingual Hungarian–English educational song. Do not rewrite, translate, omit, reorder or add any teaching lines. Preserve every repeated English line exactly. Follow the section tags and voice instructions as closely as possible. The requested duration is ${$('duration').value}; preserve the complete lyrics even if the actual duration differs. Do not claim completion until Suno confirms it. If available, return the resulting song titles and links; otherwise tell me that the songs are saved to my Suno Library.\n\nTITLE:\n${title}\n\nSTYLE OF MUSIC:\n${$('outstyle').value.trim()}\n\nLYRICS:\n${$('outlyrics').value.trim()}`;
+}
+$('copy-chatgpt').onclick=()=>{if(!$('outlyrics').value.trim()||!$('outstyle').value.trim()){$('status').textContent='Előbb készítsd elő a dalszöveget és a stílust.';return;}audit();copy(fullSunoPrompt());};
+$('outlyrics').addEventListener('input',audit);$('copystyle').onclick=()=>copy($('outstyle').value);$('copylyrics').onclick=()=>copy($('outlyrics').value);
+function loadMp3(f){if(!f)return;if(blobUrl)URL.revokeObjectURL(blobUrl);blobUrl=URL.createObjectURL(f);$('player').src=blobUrl;$('player').classList.remove('hide');$('download').href=blobUrl;$('download').download=f.name;$('download').classList.remove('hide');$('dropText').textContent=f.name;$('drop').classList.add('filled')}
+$('mp3').onchange=e=>loadMp3(e.target.files[0]);
+['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over')}));
+['dragleave','drop'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.remove('over')}));
+$('drop').addEventListener('drop',e=>{const f=[...e.dataTransfer.files].find(x=>/audio|mpeg/.test(x.type)||/\.mp3$/i.test(x.name));if(f)loadMp3(f)});
+document.addEventListener('click',e=>{if(!e.target.closest('.project-row')&&!e.target.closest('.project-menu'))document.querySelectorAll('.project-menu').forEach(x=>x.remove())});window.addEventListener('scroll',()=>document.querySelectorAll('.project-menu').forEach(x=>x.remove()),true);window.addEventListener('resize',()=>document.querySelectorAll('.project-menu').forEach(x=>x.remove()));render();
+
+function sync(){$('prepare').disabled=!$('lyrics').value.trim()}
+function setPrepared(on){$('prepared').classList.toggle('hide',!on);$('emptyprep').classList.toggle('hide',on);sync()}
+$('lyrics').addEventListener('input',()=>{lineOverrides={};renderLines();sync()});renderLines();sync();
+
+
+// A natív selectek értékeit megtartjuk mentéshez, importhoz és Suno-előkészítéshez.
+const musicPickerIds=['style','mood','duration','voice'];let activeMusicPicker=null;
+function closeMusicPicker(){if(activeMusicPicker){activeMusicPicker.menu.remove();activeMusicPicker.wrapper.classList.remove('open');activeMusicPicker.trigger.setAttribute('aria-expanded','false');activeMusicPicker=null}}
+function syncMusicPickers(){musicPickerIds.forEach(id=>{const sel=$(id),wrap=sel.closest('.field').querySelector('.music-picker');if(wrap){wrap.querySelector('.music-picker-label').textContent=sel.selectedOptions[0]?.textContent||'Válassz';}})}
+function openMusicPicker(wrapper,select,trigger){if(activeMusicPicker?.wrapper===wrapper){closeMusicPicker();return}closeMusicPicker();const menu=document.createElement('div');menu.className='music-picker-menu';menu.setAttribute('role','listbox');menu.setAttribute('aria-label',select.labels?.[0]?.textContent||'Zenei beállítás');Array.from(select.options).forEach(opt=>{const item=document.createElement('button');item.type='button';item.className='music-picker-option'+(opt.value===select.value?' selected':'');item.setAttribute('role','option');item.setAttribute('aria-selected',String(opt.value===select.value));const label=document.createElement('span');label.textContent=opt.textContent;item.append(label);if(opt.value===select.value){const tick=document.createElement('span');tick.className='tick';tick.textContent='✓';item.append(tick)}item.onclick=()=>{select.value=opt.value;select.dispatchEvent(new Event('change',{bubbles:true}));syncMusicPickers();closeMusicPicker();trigger.focus()};menu.append(item)});document.body.append(menu);const r=trigger.getBoundingClientRect();const menuHeight=menu.getBoundingClientRect().height;const below=window.innerHeight-r.bottom-12;const above=r.top-12;const placeAbove=below<Math.min(menuHeight,180)&&above>below;menu.style.width=Math.min(r.width,window.innerWidth-24)+'px';menu.style.left=Math.max(12,Math.min(r.left,window.innerWidth-menu.offsetWidth-12))+'px';menu.style.top=(placeAbove?Math.max(12,r.top-menuHeight-6):Math.min(window.innerHeight-menuHeight-12,r.bottom+6))+'px';wrapper.classList.add('open');trigger.setAttribute('aria-expanded','true');activeMusicPicker={wrapper,menu,trigger};}
+function initMusicPickers(){musicPickerIds.forEach(id=>{const select=$(id);select.classList.add('music-select-native');select.tabIndex=-1;const wrapper=document.createElement('div');wrapper.className='music-picker';const trigger=document.createElement('button');trigger.type='button';trigger.className='music-picker-trigger';trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-label',select.labels?.[0]?.textContent||'Beállítás');const label=document.createElement('span');label.className='music-picker-label';const arrow=document.createElement('span');arrow.className='music-picker-chevron';arrow.textContent='⌄';trigger.append(label,arrow);wrapper.append(trigger);select.insertAdjacentElement('afterend',wrapper);trigger.onclick=()=>openMusicPicker(wrapper,select,trigger);select.addEventListener('change',syncMusicPickers)});syncMusicPickers()}
+initMusicPickers();
+$('random-style').addEventListener('click',()=>{const sel=$('style');const options=[...sel.options];const alternatives=options.filter(o=>o.value!==sel.value);sel.value=alternatives[Math.floor(Math.random()*alternatives.length)].value;sel.dispatchEvent(new Event('change',{bubbles:true}));syncMusicPickers();$('status').textContent='Új zenei stílus kiválasztva. Az új instrukcióhoz készítsd elő ismét a Suno-szöveget.'});
+document.addEventListener('click',e=>{if(activeMusicPicker&&!e.target.closest('.music-picker')&&!e.target.closest('.music-picker-menu'))closeMusicPicker()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMusicPicker()});
+window.addEventListener('resize',closeMusicPicker);window.addEventListener('scroll',e=>{if(activeMusicPicker&&!activeMusicPicker.menu.contains(e.target))closeMusicPicker()},true);
+
+// Valódi szerveroldali belépés, a demó megszűnt.
+const changelogDialog=document.getElementById('changelog-dialog');
+function closeDialog(el){el.classList.add('hide')}
+function openDialog(el){el.classList.remove('hide')}
+document.getElementById('logout').addEventListener('click',async()=>{await fetch('/api/logout',{method:'POST'});location.replace('/login')});
+document.getElementById('show-changelog').addEventListener('click',()=>openDialog(changelogDialog));
+document.getElementById('close-changelog').addEventListener('click',()=>closeDialog(changelogDialog));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog(changelogDialog)});
+</script>
+<div id="processing" class="processing-overlay hide" role="status" aria-live="polite"><div class="processing-box"><h2>DAL ELŐKÉSZÍTÉSE</h2><div class="progress-track"><div id="progressbar" class="progress-bar"></div></div><p id="processing-message">Szöveg ellenőrzése…</p><p class="hint">A szövegfeldolgozás a böngésződben történik.</p></div></div></body>
+</html>
