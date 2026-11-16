@@ -1,3 +1,26 @@
+GyakAngol AI Dalstúdió 2.5.0 – SMART STUDIO
+
+ÚJ FUNKCIÓK
+- Smart Check: eredeti tanulósorok és ismétlések pontos összehasonlítása, sorrend, instrumentális címkék és nyelvi besorolás ellenőrzése. A Suno hangkimenetét nem elemzi.
+- MP3 csatolás: a böngésző IndexedDB tárhelyébe menti a fájlt az aktuális projekthez; projektváltáskor visszatölti. A böngésző adatainak törlése a fájlt is eltávolíthatja.
+- Projekt + MP3 ZIP: a bal oldali projekt hárompontos menüjéből; tartalmazza a projekt JSON-t, Suno szöveget, stílust, és ha van, az MP3-at. A ZIP nem tömörített, ezért közel az MP3 méretével egyezik.
+- Smart Style: szabályalapú, magyarázott stílusajánlás; a választást csak az Alkalmazás gomb véglegesíti.
+- Hangkarakter: öt választható énekhang-utasítás, az alapértelmezett tiszta, természetes hang.
+
+TELEPÍTÉS / FRISSÍTÉS
+1. Készíts biztonsági mentést a korábbi projektekből.
+2. A ZIP tartalmával frissítsd a meglévő GitHub repository fájljait (nem kell új Vercel projekt).
+3. A Vercel a GitHub változás után új telepítést indít.
+4. A Vercel DALSTUDIO_PASSWORD és DALSTUDIO_SESSION_SECRET környezeti változóit változatlanul hagyhatod. A titkokat ne töltsd fel GitHubra.
+5. A frissítés után ellenőrizd a belépést, a korábbi dalok listáját, a Suno-előnézetet, a minőségellenőrzést és az MP3 visszatöltését.
+
+KORLÁTOK
+- A projekt JSON a localStorage-ban, az MP3 az IndexedDB-ben található; csak az adott böngészőben és profilon érhetők el.
+- A Suno-kimenet nem garantált, az új hangkarakterek szöveges instrukciók.
+- A böngésző tárhelye véges; a ZIP mentéseket őrizd meg külön.
+- A meglévő szerveroldali belépési védelem változatlan.
+
+--- KORÁBBI TELEPÍTÉSI ÚTMUTATÓ ---
 GyakAngol AI Dalstúdió 2.3.0 – VALÓDI JELSZAVAS BELÉPÉS
 
 FONTOS: ez már NEM önálló, megnyitható HTML, hanem Next.js alkalmazás.

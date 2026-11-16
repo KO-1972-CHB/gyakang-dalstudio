@@ -1,0 +1,13 @@
+GYAKANGOL DALSTÚDIÓ 3.0 – TELEPÍTÉS ÉS FONTOS TUDNIVALÓK
+
+A 3.0 a működő 2.5-ös projektből készült. A kézi Suno-mód és a meglévő funkciók változatlanul használhatók.
+
+ÚJ: Közvetlen Suno-generálás előkészített, INAKTÍV felülettel. Ez nem indít generálást, nem fogyaszt kreditet, és nem tárol API-kulcsot.
+
+FRISSÍTÉS: A ZIP-ben lévő gyakang-dalstudio-main mappa TARTALMÁT töltsd fel a meglévő GitHub repository gyökerébe. A Vercel automatikus telepítése esetén a push után új deployment indul. A meglévő DALSTUDIO_PASSWORD és DALSTUDIO_SESSION_SECRET környezeti változók maradjanak változatlanok. Ne tölts fel .env vagy titkos kulcs fájlt.
+
+A projektjeid és MP3-jaid böngészőben, helyben tárolódnak. Frissítés előtt érdemes minden fontos projektet ZIP-be exportálni. Másik böngészőben vagy eszközön a helyi projektek nem jelennek meg automatikusan.
+
+ELLENŐRZÉS: belépőn v3.0.0; bal alsó sarokban v3.0.0; kézi másolás működik; automatikus generálás gomb inaktív; korábbi projektek megnyithatók.
+
+A 3.1 élesítéséhez: hivatalos Suno generálási API-hozzáférés, szerveroldali API-kulcs, biztonságos végpont, hibakezelés és tesztelés szükséges. A 3.0 nem ígér működő Suno API-integrációt.
